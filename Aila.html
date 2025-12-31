@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Şarkı Oluşturma Aracı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    header {
+      padding: 16px 32px;
+      background: #020617;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    nav a {
+      color: #e5e7eb;
+      margin-left: 16px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .hero {
+      padding: 40px 32px;
+      text-align: center;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .hero h2 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 24px 32px;
+      gap: 24px;
+    }
+
+    .panel {
+      background: #020617;
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid #1f2937;
+    }
+
+    .left-panel {
+      flex: 1 1 280px;
+      max-width: 360px;
+    }
+
+    .right-panel {
+      flex: 2 1 400px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: 13px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-group {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #e5e7eb;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .results-tabs {
+      display: flex;
+      border-bottom: 1px solid #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .tab {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .tab.active {
+      color: #e5e7eb;
+      border-bottom: 2px solid #2563eb;
+    }
+
+    .result-box {
+      min-height: 180px;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: #6b7280;
+      border-top: 1px solid #1f2937;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>AI Şarkı Stüdyosu</h1>
+  <nav>
+    <a href="#studio">Stüdyo</a>
+    <a href="#how">Nasıl Çalışır?</a>
+    <a href="#contact">İletişim</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Yapay zeka ile saniyeler içinde şarkı yaz</h2>
+  <p>Türü, duyguyu ve temayı seç; gerisini yapay zeka halletsin.</p>
+  <button class="btn-primary" onclick="document.getElementById('studio').scrollIntoView({behavior:'smooth'})">
+    Hemen Başla
+  </button>
+</section>
+
+<main id="studio" class="container">
+
+  <!-- Sol Panel -->
+  <section class="panel left-panel">
+    <h3>Şarkı Ayarları</h3>
+
+    <label>Tür</label>
+    <select id="tur">
+      <option>Arabesk</option>
+      <option>Pop</option>
+      <option>Rap</option>
+      <option>Rock</option>
+      <option>Halk Müziği</option>
+    </select>
+
+    <label>Duygu</label>
+    <select id="duygu">
+      <option>Hüzünlü</option>
+      <option>İsyankar</option>
+      <option>Umutsuz</option>
+      <option>Umudu içinde taşıyan</option>
+      <option>Mutlu</option>
+    </select>
+
+    <label>Tema</label>
+    <input type="text" id="tema" placeholder="Örn: Terk edilme, memleket hasreti">
+
+    <label>Dil</label>
+    <select id="dil">
+      <option>Türkçe</option>
+      <option>İngilizce</option>
+    </select>
+
+    <label>Şarkı Uzunluğu</label>
+    <select id="uzunluk">
+      <option>Kısa</option>
+      <option>Orta</option>
+      <option>Uzun</option>
+    </select>
+
+    <label>Ekstra Notlar</label>
+    <textarea id="ekstra" placeholder="Örn: Ağır arabesk, 1. tekil şahıs, sokak ağzı hafif olsun."></textarea>
+
+    <div class="btn-group">
+      <button class="btn-primary" onclick="uret('soz')">Söz Üret</button>
+      <button class="btn-secondary" onclick="uret('akor')">Akor Öner</button>
+      <button class="btn-secondary" onclick="uret('hepsi')">Hepsini Üret</button>
+    </div>
+  </section>
+
+  <!-- Sağ Panel -->
+  <section class="panel right-panel">
+    <h3>Sonuçlar</h3>
+
+    <div class="results-tabs">
+      <div class="tab active" id="tab-soz" onclick="sekmeAc('soz')">Sözler</div>
+      <div class="tab" id="tab-akor" onclick="sekmeAc('akor')">Akorlar</div>
+      <div class="tab" id="tab-yapi" onclick="sekmeAc('yapi')">Şarkı Yapısı</div>
+    </div>
+
+    <div id="result-soz" class="result-box">Burada şarkı sözleri görünecek.</div>
+    <div id="result-akor" class="result-box" style="display:none;">Burada akorlar görünecek.</div>
+    <div id="result-yapi" class="result-box" style="display:none;">Burada şarkı yapısı görünecek.</div>
+
+  </section>
+
+</main>
+
+<section id="how" class="hero">
+  <h2>Nasıl Çalışır?</h2>
+  <p>1) Tür ve duyguyu seç. 2) Temayı yaz. 3) Üret butonuna bas.</p>
+</section>
+
+<section id="contact" class="hero">
+  <h2>İletişim</h2>
+  <p>Geri bildirim için: <strong>ornek@mail.com</strong></p>
+</section>
+
+<footer>
+  © 2025 AI Şarkı Stüdyosu – Deneysel bir yapay zeka müzik aracı.
+</footer>
+
+<script>
+  function sekmeAc(tur) {
+    const tabs = ['soz','akor','yapi'];
+    tabs.forEach(t => {
+      document.getElementById('result-' + t).style.display = (t === tur) ? 'block' : 'none';
+      document.getElementById('tab-' + t).classList.toggle('active', t === tur);
+    });
+  }
+
+  function uret(mod) {
+    const tur = document.getElementById('tur').value;
+    const duygu = document.getElementById('duygu').value;
+    const tema = document.getElementById('tema').value;
+    const uzunluk = document.getElementById('uzunluk').value;
+    const ekstra = document.getElementById('ekstra').value;
+
+    if (mod === 'soz' || mod === 'hepsi') {
+      document.getElementById('result-soz').textContent =
+`[DEMO] ${tur} – ${duygu}
+Tema: ${tema}
+Uzunluk: ${uzunluk}
+
+Buraya AI tarafından üretilen şarkı sözleri gelecek.
+Ekstra: ${ekstra}`;
+    }
+
+    if (mod === 'akor' || mod === 'hepsi') {
+      document.getElementById('result-akor').textContent =
+`[DEMO] Akor Önerileri:
+Am – G – F – E
+Dm – Bb – C – A`;
+    }
+
+    if (mod === 'hepsi') {
+      document.getElementById('result-yapi').textContent =
+`[DEMO] Şarkı Yapısı:
+Giriş
+Kıta 1
+Nakarat
+Kıta 2
+Nakarat
+Köprü
+Final`;
+    }
+  }
+</script>
+
+</body>
+</html>
+
+
